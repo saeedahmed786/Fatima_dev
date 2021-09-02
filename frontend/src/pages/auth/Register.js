@@ -6,9 +6,6 @@ import Checkbox from "antd/lib/checkbox/Checkbox";
 import { GoogleLogin } from 'react-google-login';
 import { createOrUpdateUser, login, register } from "../../functions/auth";
 import { setAuthentication } from "../../functions/setLoginInfo";
-import { Button } from "antd";
-import { MailOutlined } from "@ant-design/icons";
-
 
 const Register = ({ history }) => {
   const [userData, setUserData] = useState({

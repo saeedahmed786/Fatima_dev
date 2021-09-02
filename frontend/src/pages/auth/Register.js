@@ -67,6 +67,12 @@ const handleChange = (e) => {
                history.push('/login');
            }, 2000);
         }
+        else if(res.status == 201) {
+           toast.warning(res.data.errorMessage);
+           setTimeout(() => {
+               history.push('/login');
+           }, 2000);
+        }
       })
       .catch((err) => console.log(err));
     }

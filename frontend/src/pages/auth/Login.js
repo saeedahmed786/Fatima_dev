@@ -54,7 +54,6 @@ const Login = ({ history }) => {
     try {
       login(email, password)
       .then((res) => {
-        console.log(res);
         dispatch({
           type: "LOGGED_IN_USER",
           payload: {

@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  width: 100%;
+  /* width: 100%; */
   overflow-x: hidden !important;
 }
 
@@ -10,6 +10,9 @@ body a {
   color: #6C6969;
 }
 
+.app {
+  overflow-x: hidden !important;
+}
 
 .slider img,
 .card-image {
@@ -25,6 +28,11 @@ body a {
   .anticon {
     color: #9f780f !important;
 }
+
+.anticon-delete {
+  color: red !important;
+}
+
 
 .checkbox{
   border:2px solid white;
@@ -47,6 +55,53 @@ h4 {
   color: #A17B14 !important;
 }
 
+@media (max-width: 460px) {
+     .product-card img {
+        max-height: 260px !important;
+     }
+
+     .font-home {
+       font-size: 19px !important;
+     }
+
+     footer .bottom-links {
+       font-size:10px;
+     }
+
+     footer .row {
+      --bs-gutter-x: 0 !important;
+     }
+
+     footer .ant-row {
+       margin-left: 0px;
+     }
+
+     footer img {
+       width: 71px;
+     }
+
+     footer .ant-row {
+       margin-left: 0px;
+     }
+
+     footer .payments {
+        justify-content: center !important;
+     }
+}
+
+
+.wishlist thead th, .coupans thead th {
+    background: #ae853b;
+    color: white;
+    font-size: 19px;
+    text-align: center;
+}
+
+.wishlist table, .coupans table {
+  border-collapse:separate;
+  border-spacing: 4px 4px;
+}
+​​​​​​​​​​​​​​​​​​​​​​​​​
 
 /******************************************************************* Navbar ******************************************************************/  
 .navbar {
@@ -214,7 +269,93 @@ h4 {
           }
 
 
-          
+.admin-nav a {
+   color: #ae853b;
+   font-size: 28px;
+   font-weight: 400;
+} 
+
+.admin-nav a:hover {
+   color: #e2e1e1;
+}    
+
+
+/************************************************************** Forms ***************************************************************************/
+.product-forms .form-group {
+   margin-top: 19px;
+}
+.product-forms input, .product-forms select, .search-filter {
+   border-color: #ae853b;
+   border-width: 3px;
+   border-radius: 6px;
+   width: 40%;
+}
+
+.product-forms .ant-select {
+   display: block !important;
+   width: 40% !important;
+   border-width: 3px !important;
+}
+
+.product-forms .ant-select-selector {
+   border-width: 3px !important;
+}
+
+.product-forms label {
+   color: #9F780F;
+   font-weight: 500;
+   font-size: 21px;
+   margin-bottom: 10px;
+}
+
+.product-forms .form-control:focus, .search-filter:focus {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-color: #ae853b; 
+  -webkit-box-shadow: inset 0 0 0 1px #ae853b;
+  box-shadow: inset 0 0 0 1px #ae853b;
+}
+
+.product-forms button {
+   background: #ae853b;
+   color: white;
+   border: none;
+   padding: 15px;
+   width: 10%;
+   border-radius: 10px;
+}
+.product-forms button:hover {
+   background: #ae853b;
+   color: white;
+}
+
+
+.lists {
+   width: 300px;
+   margin-bottom: 20px !important;
+   padding: 17px;
+}
+.lists .name {
+   background: #ae853b;
+   color: white;
+   border-radius: 8px;
+   padding: 19px;
+}
+
+.lists .float-end {
+  margin-right: 23px;
+}
+
+.lists .float-end {
+  margin-right: 23px;
+}
+.lists .float-end .anticon {
+  font-size: 23px;
+}
+
+
+
+
 
 /************************************************************** Homepage ***************************************************************************/
 .homepage {
@@ -316,7 +457,7 @@ h4 {
 /*********************************************************************Login********************************************************************/
 
 .login {
-   margin-top: 15vh;
+   margin-top: 80px;
 }
 
 .login h4 {
@@ -359,13 +500,16 @@ h4 {
  .google-button button {
    background-color: #2064EE !important;
    padding-left: 2px !important;
-   width: 360px !important;
+   max-width: 360px !important;
+   width: 50%;
+   min-width: 200px;
    height: 49px;
 }
  .google-button div {
     background: #534f4f;
     width: 43px !important;
     border-radius: 4px !important;
+
 }
  .google-button div svg {
     width: 100 !important;
@@ -373,8 +517,7 @@ h4 {
 
  .google-button button span {
    color: #ffff;
-   padding: 0 !important;
-   margin-left: 60px;
+   margin: 0 auto;
 }
 
 /*********************************************************************Register********************************************************************/
@@ -478,7 +621,7 @@ hr {
     margin-top: 28px;
 }
  .quantity input {
-    width: 60px;
+    width: 80px;
     height: 30px;
     border: 1px solid #A17B14 !important;
 }
@@ -506,6 +649,13 @@ hr {
 }
 
 
+.single-product .carousel-root .carousel-slider img {
+   height: 100%;
+   width: 100%;
+   max-height: 880px !important;
+   max-width: 100%;
+   /* min-height: 200px; */
+}
 
 /*********************************************************************Cart********************************************************************/
 .cart .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
@@ -545,12 +695,12 @@ hr {
    margin-top: 10px;
 }
 
-.cart  .ccv input {
+.cart .credit-card input {
   border-radius: 10px;
   border-color: #A17B14;
   margin-top: 10px;
 }
-.cart  .ccv input:focus {
+.cart  .credit-card input:focus {
   border: none;
 }
 
@@ -590,7 +740,11 @@ hr {
 }
 
 .shop p span {
-   font-size: 42;
+   font-size: 23px;
+}
+
+.shop .col-md-4 .anticon {
+   font-size: 21px;
 }
 .shop .col-md-12.sub {
    margin-left: 20px;
@@ -664,6 +818,14 @@ hr {
 }
 
 
+.sub-text {
+  color: #8F887F;
+}
+
+.anticon-close {
+   color: #8F887F !important;
+}
+
 
 
 /************************************************************* Checkout ******************************************************************/
@@ -696,12 +858,50 @@ footer .col-md-9 img {
 }
 
 footer .bottom-links {
-   margin-top: 10px;
-   padding-top: 32px;
+  /* display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center; */
+  padding-top: 30px;
 }
 
 footer .bottom-links a {
    color: #9F780F;
-   margin-right: 60px;
+   /* margin-right: 60px; */
    font-weight: bolder;
+}
+
+
+
+/************************************************* Coupan **************************************************************************/
+.coupans .table tr {
+    font-size: 19px;
+    font-weight: 600;
+    color: #ae853b;
+    text-align: center;
+ }
+
+
+/*********************************************** Mobile Bottom Nav ****************************************************************/
+.mobile-bottom-dash {
+   background: #9F780F;
+   position: fixed;
+   bottom: 0px;
+   width: 100%;
+   display: flex;
+   justify-content: space-around;
+   /* gap: 100px; */
+}
+
+.mobile-bottom-dash .anticon {
+  color: white !important;
+}
+
+
+
+@media (min-width: 2300px) {
+     .app {
+        width: 2300px !important;
+        margin: 0 auto;
+     }
 }

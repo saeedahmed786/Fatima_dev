@@ -1,6 +1,4 @@
-import Checkbox from "antd/lib/checkbox/Checkbox";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { Select } from 'antd';
 import _ from "lodash";
 import { useDispatch } from "react-redux";
@@ -10,19 +8,14 @@ const { Option } = Select;
 
 const ProductListItems = ({ product }) => {
   const [tooltip, setTooltip] = useState("Click to add");
-  const {
-    price,
-    category,
-    subs,
-    shipping,
-    color,
-    brand,
-    quantity,
-    sold,
-  } = product;
+  const [count, setCount] = useState('');
 
-  function handleChange(value) {
-    console.log(`selected ${value}`);
+  function handleColorChange(value) {
+    product.color = value
+  }
+
+  function handleSizeChange(value) {
+    product.size = value
   }
 
   const dispatch = useDispatch();
@@ -37,7 +30,7 @@ const ProductListItems = ({ product }) => {
       // push new product to cart
       cart.push({
         ...product,
-        count: 1,
+        count,
       });
       // remove duplicates
       let unique = _.uniqWith(cart, _.isEqual);
@@ -55,107 +48,51 @@ const ProductListItems = ({ product }) => {
       toast.success("Item added to cart");
     }
   };
+
+  console.log(product)
+  const handleQChange = (e) => {
+    setCount(e.target.value < 1 ? 1 : e.target.value);
+
+    if (count > product.quantity) {
+      toast.error(`Product out of stock.`);
+      return;
+    }
+  }
+
   return (
-    // <ul className="list-group">
-    //   <li className="list-group-item">
-    //     Price{" "}
-    //     <span className="label label-default label-pill float-xs-right ">
-    //       SR {price}
-    //     </span>
-    //   </li>
-
-    //   {category && (
-    //     <li className="list-group-item">
-    //       Category{" "}
-    //       <Link
-    //         to={`/category/${category.slug}`}
-    //         className="label label-default label-pill float-xs-right"
-    //       >
-    //         {category.name}
-    //       </Link>
-    //     </li>
-    //   )}
-
-    //   {subs && (
-    //     <li className="list-group-item">
-    //       Sub Categories
-    //       {subs.map((s) => (
-    //         <Link
-    //           key={s._id}
-    //           to={`/sub/${s.slug}`}
-    //           className="label label-default label-pill pull-xs-right"
-    //         >
-    //           {s.name}
-    //         </Link>
-    //       ))}
-    //     </li>
-    //   )}
-
-    //   <li className="list-group-item">
-    //     Shipping{" "}
-    //     <span className="label label-default label-pill pull-xs-right">
-    //       {shipping}
-    //     </span>
-    //   </li>
-
-    //   <li className="list-group-item">
-    //     Color{" "}
-    //     <span className="label label-default label-pill pull-xs-right">
-    //       {color}
-    //     </span>
-    //   </li>
-
-    //   <li className="list-group-item">
-    //     Brand{" "}
-    //     <span className="label label-default label-pill pull-xs-right">
-    //       {brand}
-    //     </span>
-    //   </li>
-
-    //   <li className="list-group-item">
-    //     Available{" "}
-    //     <span className="label label-default label-pill pull-xs-right">
-    //       {quantity}
-    //     </span>
-    //   </li>
-
-    //   <li className="list-group-item">
-    //     Sold{" "}
-    //     <span className="label label-default label-pill pull-sm-right">
-    //       {sold}
-    //     </span>
-    //   </li>
-    // </ul>
-
-    <div className = 'product-details w-50'>
+    <div className = 'product-details'>
         <div className = 'select-portion'>
          <span className = 'tag'>Color</span>
-        <Select defaultValue="Please Choose..." style={{ width: 141 }} onChange={handleChange}>
+        <Select defaultValue="Please Choose..." style={{ width: 141 }} onChange={handleColorChange}>
           <Option value="White">White</Option>
           <Option value="Black">Black</Option>
-          <Option value="Yellwo">Yellwo</Option>
+          <Option value="Yellwo">Yellow</Option>
           <Option value="Orange">Orange</Option>
+          <Option value="Orange">Pink</Option>
+          <Option value="Orange">Red</Option>
         </Select>
         </div>
         <div className = 'select-portion'>
         <span className = 'tag'>Sizes </span>
-        <Select defaultValue="Please Choose..." style={{ width: 141 }} onChange={handleChange}>
+        <Select defaultValue="Please Choose..." style={{ width: 141 }} onChange={handleSizeChange}>
           <Option value="S">S</Option>
           <Option value="M">M</Option>
           <Option value="L">L</Option>
           <Option value="XL">XL</Option>
+          <Option value="XL">XXL</Option>
         </Select>
         </div>
-        <div className = 'quantity mb-4'>
-           <input type = 'number'/> <button className = 'btn' onClick = {handleAddToCart}>
+        <div className = 'quantity mb-4 d-flex'>
+           <input type = 'number' value = {count} onChange = {handleQChange}/> 
+            <button className = 'btn' style = {{minWidth: '130px'}} onClick = {handleAddToCart}>
                Add to cart
            </button>
         </div>
         <hr/>
-        <div className = 'description mt-2'>
+        <div className = 'description mt-2 w-100'>
             <h4>Description</h4>
             <p>
-              Lorem Ipsuumnsabfnasbfasmbnf asjkfjhfh kjwfhkawf kwfjkwf jkwhfwf 
+              {product.description}
             </p>
         </div>
         <hr className = ''/>

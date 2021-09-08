@@ -1,7 +1,7 @@
 import React from "react";
 
 const CategoryForm = ({ handleSubmit, name, setName }) => (
-  <form onSubmit={handleSubmit}>
+  <form onSubmit={handleSubmit} className = 'product-forms'>
     <div className="form-group">
       <label>Name</label>
       <input

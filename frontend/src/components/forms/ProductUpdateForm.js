@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Select } from "antd";
+import { getBrands } from "../../functions/brand";
 
 const { Option } = Select;
 
@@ -26,13 +27,23 @@ const ProductUpdateForm = ({
     quantity,
     images,
     colors,
-    brands,
+    // brands,
     color,
     brand,
   } = values;
 
+  const [brands, setBrands] = useState([]);
+  useEffect(() => {
+    loadBrands();
+  }, []);
+
+  const loadBrands = () => {
+    getBrands().then((c) => setBrands(c.data));
+  }
+
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className =  'product-forms'>
       <div className="form-group">
         <label>Title</label>
         <input
@@ -115,8 +126,8 @@ const ProductUpdateForm = ({
           onChange={handleChange}
         >
           {brands.map((b) => (
-            <option key={b} value={b}>
-              {b}
+            <option key={b._id} value={b.slug}>
+              {b.name}
             </option>
           ))}
         </select>

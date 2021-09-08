@@ -1,107 +1,76 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Dropdown, Input, Menu } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Dropdown, Input, Menu, Button } from 'antd';
 import {
-  HomeOutlined,
-  SettingOutlined,
   UserOutlined,
-  UserAddOutlined,
   LogoutOutlined,
   ShoppingOutlined,
-  ShoppingCartOutlined,
   HeartOutlined,
-  ShopOutlined,
-  SearchOutlined,
   DownOutlined,
 } from '@ant-design/icons';
 import { Link } from "react-router-dom";
-import firebase from 'firebase';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import Search from '../forms/Search';
-import { Badge } from 'reactstrap';
+import { useSelector } from 'react-redux';
 import { isAuthenticated, logout } from '../../functions/setLoginInfo';
 import { MobileNav } from './mobileNav';
 import logo from '../../images/Footer//Layer 4@1X.png';
-import { fetchProductsByFilter, fetchProductsBySearch } from '../../functions/product';
-
-
-
-const { SubMenu, Item } = Menu;
+import { fetchProductsBySearch } from '../../functions/product';
+import { getWishlist } from '../../functions/user';
+import { fetchBrandsBySearch } from '../../functions/brand';
+import { Tabs } from 'antd';
+const { TabPane } = Tabs;
 
 const Header = () => {
-  const node = useRef();
-  const [current, setCurrent] = useState("home");
-  const [open, setOpen] = useState(false);
   const [products, setProducts] = useState([]);
-
-  let dispatch = useDispatch();
+  const [brands, setBrands] = useState([]);
   let { user, cart } = useSelector((state) => ({ ...state }));
+  const [wishlist, setWishlist] = useState([]);
 
-  let history = useHistory();
+  useEffect(() => {
+    loadWishlist();
+  }, []);
 
-  const handleClick = (e) => {
-
-    setCurrent(e.key);
-
-
-  };
-  console.log(cart.length);
-
-  // const logout = () => {
-
-  //   firebase.auth().signOut ()
-  //   dispatch({
-  //     type:"LOGOUT",
-  //     payload: null,
-  //   });
-
-  //   history.push("/login");
-
-  // };
+  const loadWishlist = () => {
+    getWishlist(localStorage.getItem('token')).then((res) => {
+      setWishlist(res.data.wishlist);
+    });
+  }
 
   const menu = (
-    <Menu style={{ padding: "10px" }}>
-      <Menu.Item key={'2'}>
-        <a
-          href="/login"
-          onClick={(e) => {
-            logout(() => { });
-          }}
-        >
-          Logout
-        </a>
-      </Menu.Item>
+    <Menu style={{ padding: "28px", width: '100%' }}>
+      <div key={'1'}>
+          <Link to = '/login' className="btn mb-3 w-100"style = {{background: 'none', borderRadius: '6px'}}>Login</Link>
+       </div>
+      <div key={'2'}>
+          <Link to = '/register' className="btn w-100 text-white"style = {{background: '#9f780f', borderRadius: '6px'}}>Create new account</Link>
+      </div>
+    </Menu>
+  )
+
+  const menu2 = (
+    <Menu style={{ padding: "28px", width: '100%' }}>
+      <div key={'1'}>
+          <Link to = {isAuthenticated().role === 'admin' ? '/admin/dashboard' : '/user/wishlist'} className="btn mb-3 w-100"style = {{background: 'none', borderRadius: '6px'}}>Dashboard</Link>
+       </div>
+      <div key={'2'}>
+          <Link onClick={() => { logout(() => { document.location.reload()  })} } className="btn w-100 text-white"style = {{background: '#9f780f', borderRadius: '6px'}}>Logout</Link>
+      </div>
     </Menu>
   )
 
   const handleChange = (e) => {
     fetchProductsBySearch(e.target.value).then(res => {
       setProducts(res.data);
+    });
+
+    fetchBrandsBySearch(e.target.value).then(res => {
+      setBrands(res.data);
     })
   }
 
   console.log(products);
 
-  /************************************************** Search Bar and Results ****************************************/
-  // const handleClicking = e => {
-  //   if (node.current.contains(e.target)) {
-  //     return;
-  //   }
-  //   setOpen(false);
-  // };
-
-
-  // useEffect(() => {
-  //   document.addEventListener("mousedown", handleClicking);
-
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClicking);
-  //   };
-  // }, []);
-
   return (
     <div>
-      <nav className="navbar navbar-expand-lg d-none d-sm-block">
+      <nav className="navbar navbar-expand-lg d-none d-sm-block pb-3">
         <div className="container">
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -119,10 +88,22 @@ const Header = () => {
                       products.length > 0 ? products.map(product => {
                         return (
                           <li className='dropdown-item' key={product._id}>
-                            <Link style={{ fontSize: '13px', color: '#696e79', paddingLeft: '4px' }} to={'/product/' + product.slug}>
+                            <a style={{ fontSize: '13px', color: '#696e79', paddingLeft: '4px' }} href={'/product/' + product.slug}>
                               {product.title}
-                            </Link>
+                            </a>
                           </li>
+                        )
+                      })
+                      :
+                      brands.length > 0 ? brands.map(brand => {
+                        return (
+                          <>
+                          <li className='dropdown-item' key={brand._id}>
+                            <a style={{ fontSize: '13px', color: '#696e79', paddingLeft: '4px' }} href={'/brand/' + brand.slug}>
+                              {brand.name}
+                            </a>
+                          </li>
+                          </>
                         )
                       })
                         :
@@ -136,7 +117,11 @@ const Header = () => {
            
             </ul>
             <div className="d-flex nav-icons">
-              <Link to='/user/wishlist'><HeartOutlined /></Link>
+              <Link style={{ position: 'relative' }} to='/user/wishlist'><HeartOutlined />
+                <span style={{ background: '#9f780f', color: '#FFFFFF', position: 'absolute', left: '36%', top: '47%', width: '17px', height: '17px', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    {wishlist && wishlist.length}
+                </span>
+              </Link>
               <Link style={{ position: 'relative' }} to='/cart'><ShoppingOutlined />
                 <span style={{ background: '#9f780f', color: '#FFFFFF', position: 'absolute', left: '36%', top: '47%', width: '17px', height: '17px', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     {cart && cart.length}
@@ -145,9 +130,18 @@ const Header = () => {
               <div>
                 {
                   isAuthenticated() ?
-                    <a href='/login' onClick={() => { logout(() => { }) }}><LogoutOutlined /></a>
+                    // <a href='/login' onClick={() => { logout(() => { }) }}><LogoutOutlined /></a>
+                    <Dropdown overlay={menu2}>
+                      <Link className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                         <UserOutlined/>
+                      </Link>
+                    </Dropdown>
                     :
-                    <Link to='/login'><UserOutlined /></Link>
+                    <Dropdown overlay={menu}>
+                      <Link className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                         <UserOutlined/>
+                      </Link>
+                    </Dropdown>
                 }
               </div>
               <div className='float-right'>
@@ -159,7 +153,9 @@ const Header = () => {
       </nav>
       <div className='p-4 d-flex justify-content-between d-block d-sm-none mb-5'>
         <div>
-          <img src={logo} alt='logo' />
+        <Link to = '/'>
+          <img src={logo} alt='logo' width = '64' className = 'mt-4'/>
+         </Link> 
         </div>
         <div className='mt-5'>
           <MobileNav />

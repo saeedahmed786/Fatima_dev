@@ -58,7 +58,7 @@ const CreateCouponPage = () => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid coupans">
       <div className="row">
         <div className="col-md-2">
           <AdminNav />
@@ -69,59 +69,59 @@ const CreateCouponPage = () => {
           ) : (
             <h4>Coupon</h4>
           )}
-<div className="">
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label className="text-muted">Name</label>
-              <input
-                type="text"
-                className="form-control"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-                autoFocus
-                required
-              />
-            </div>
-<br/>
-            <div className="form-group">
-              <label className="text-muted">Discount %</label>
-              <input
-                type="text"
-                className="form-control"
-                onChange={(e) => setDiscount(e.target.value)}
-                value={discount}
-                required
-              />
-            </div>
- <br/>
-            <div className="form-group">
-              <label className="text-muted">Expiry</label>
+          <div className="product-forms">
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label className="text-muted">Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  onChange={(e) => setName(e.target.value)}
+                  value={name}
+                  autoFocus
+                  required
+                />
+              </div>
               <br />
-              <DatePicker
-                className="form-control"
-                selected={new Date()}
-                value={expiry}
-                onChange={(date) => setExpiry(date)}
-                required
-              />
-            </div>
- <br/>
-            <button className="btn btn-outline-primary">Save</button>
-          </form>
+              <div className="form-group">
+                <label className="text-muted">Discount %</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  onChange={(e) => setDiscount(e.target.value)}
+                  value={discount}
+                  required
+                />
+              </div>
+              <br />
+              <div className="form-group">
+                <label className="text-muted">Expiry</label>
+                <br />
+                <DatePicker
+                  className="form-control"
+                  selected={new Date()}
+                  value={expiry}
+                  onChange={(date) => setExpiry(date)}
+                  required
+                />
+              </div>
+              <br />
+              <button className="btn btn-outline-primary">Save</button>
+            </form>
           </div>
           <br />
 
           <h4>{coupons.length} Coupons</h4>
 
-          <table className="table table-bordered">
+          <table className="table table-bordereless">
             <thead className="thead-light">
               <tr>
                 <th scope="col">Name</th>
-            
+
                 <th scope="col">Expiry</th>
-               
+
                 <th scope="col">Discount</th>
-              
+
                 <th scope="col">Action</th>
               </tr>
             </thead>

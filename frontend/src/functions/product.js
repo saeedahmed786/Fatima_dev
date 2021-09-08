@@ -54,6 +54,6 @@ export const updateProduct = async (slug, product, token) =>
 
   export const fetchProductsBySearch = async (query) =>
   await axios.post(`${process.env.REACT_APP_API}/search/by-text`, {query});
-
-  export const fetchProductsByFilter = async (arg) =>
-  await axios.post(`${process.env.REACT_APP_API}/search/filters`, arg);
+  
+  export const fetchProductsByFilter = async (arg) => 
+     await axios.post(`${process.env.REACT_APP_API}/search/filters`, arg);

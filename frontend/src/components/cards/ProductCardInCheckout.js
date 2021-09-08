@@ -1,12 +1,9 @@
-import React from "react";
-import ModalImage from "react-modal-image";
+import React, { useState } from "react";
 import sport from "../../images/sport.jpeg";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import {
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  CloseOutlined,
+  CloseOutlined
 } from "@ant-design/icons";
 import { Select } from 'antd';
 
@@ -14,11 +11,10 @@ const { Option } = Select;
 
 
 const ProductCardInCheckout = ({ p }) => {
-  const colors = ["Black", "Brown", "Silver", "White", "Blue"];
   let dispatch = useDispatch();
 
-  const handleColorChange = (e) => {
-    console.log("color changed", e.target.value);
+  const handleSizeChange = (value) => {
+    console.log("color changed", value);
 
     let cart = [];
     if (typeof window !== "undefined") {
@@ -28,7 +24,7 @@ const ProductCardInCheckout = ({ p }) => {
 
       cart.map((product, i) => {
         if (product._id === p._id) {
-          cart[i].color = e.target.value;
+          cart[i].size = value;
         }
       });
 
@@ -46,7 +42,7 @@ const ProductCardInCheckout = ({ p }) => {
     let count = e.target.value < 1 ? 1 : e.target.value;
 
     if (count > p.quantity) {
-      toast.error(`Max available quantity: ${p.quantity}`);
+      toast.error(`Product out of stock.`);
       return;
     }
 
@@ -94,80 +90,7 @@ const ProductCardInCheckout = ({ p }) => {
     }
   };
 
-  function handleChange(value) {
-    console.log(`selected ${value}`);
-  }
-
   return (
-    // <tbody>
-    //   <tr>
-    //     <td>
-    //       <div style={{ width: "100px", height: "auto" }}>
-    //         {p.images.length ? (
-    //           <ModalImage small={p.images[0].url} large={p.images[0].url} />
-    //         ) : (
-    //           <ModalImage small={sport} large={sport} />
-    //         )}
-    //       </div>
-    //     </td>
-    //     <td>{p.title}</td>
-    //     <td>{p.price} SR </td>
-    //     <td>{p.brand}</td>
-    //     <td>
-    //       <select
-    //         onChange={handleColorChange}
-    //         name="color"
-    //         className="form-control"
-    //       >
-    //         {p.color ? (
-    //           <option value={p.color}>{p.color}</option>
-    //         ) : (
-    //           <option>Select</option>
-    //         )}
-    //         {colors
-    //           .filter((c) => c !== p.color)
-    //           .map((c) => (
-    //             <option key={c} value={c}>
-    //               {c}
-    //             </option>
-    //           ))}
-    //       </select>
-    //     </td>
-    //     <td className="text-center">
-    //       <input
-    //         type="number"
-    //         className="form-control"
-    //         value={p.count}
-    //         onChange={handleQuantityChange}
-    //       />
-    //     </td>
-    //     <td className="text-center">
-    //       {p.shipping === "Yes" ? (
-    //         <CheckCircleOutlined className="text-success" />
-    //       ) : (
-    //         <CloseCircleOutlined className="text-danger" />
-    //       )}
-    //     </td>
-    //     <td className="text-center">
-    //       <CloseOutlined
-    //         onClick={handleRemove}
-    //         className="text-danger pointer"
-    //       />
-    //     </td>
-    //   </tr>
-    // </tbody>
-
-    // <div className="table-responsive cart">
-    //   <table className="table table-borderless">
-    //     <thead style={{ borderBottom: '2px solid #A17B14' }}>
-    //       <tr>
-    //         <th scope="col">Product</th>
-    //         <th scope="col">Size</th>
-    //         <th scope="col">Quantity</th>
-    //         <th scope="col">Total Price</th>
-    //       </tr>
-    //     </thead>
-    //     <tbody>
           <tr>
             <td className='d-flex'>
               {
@@ -184,7 +107,7 @@ const ProductCardInCheckout = ({ p }) => {
             </td>
             <td>
             <div className=' mt-5 pt-1'>
-              <Select style={{ width: 80}} onChange={handleChange}>
+              <Select style={{ width: 80}} defaultValue = {p.size} onChange={handleSizeChange}>
                 <Option value="S">S</Option>
                 <Option value="M">M</Option>
                 <Option value="L">L</Option>
@@ -194,7 +117,7 @@ const ProductCardInCheckout = ({ p }) => {
             </td>
             <td className = ''>
               <div className='quantity mt-5 pt-1'>
-                <input type='number' className = 'w-25'/> 
+                <input value = {p.count} type='number' onChange = {handleQuantityChange} className = 'w-75'/> 
               </div>
             </td>
             <td>

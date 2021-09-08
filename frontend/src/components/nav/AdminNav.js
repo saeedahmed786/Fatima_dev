@@ -57,7 +57,7 @@ import { Link } from "react-router-dom";
 const AdminNav = () => (
   <nav>
     <br/>
-    <ul className="colo">
+    <ul className="colo admin-nav">
       <li className="nav-item">
         <Link to="/admin/dashboard" className="nav-link Link ex3 ">
           Dashboard
@@ -65,14 +65,14 @@ const AdminNav = () => (
       </li>
 
       <li className="nav-item">
-        <Link to="/admin/product" className="nav-link Link ex3">
-          Product
+        <Link to="/admin/products" className="nav-link Link ex3">
+          All Products
         </Link>
       </li>
 
       <li className="nav-item">
-        <Link to="/admin/products" className="nav-link Link ex3">
-          Products
+        <Link to="/admin/product" className="nav-link Link ex3">
+          Product
         </Link>
       </li>
 
@@ -85,6 +85,12 @@ const AdminNav = () => (
       <li className="nav-item">
         <Link to="/admin/sub" className="nav-link Link ex3">
           Sub Category
+        </Link>
+      </li>
+
+      <li className="nav-item">
+        <Link to="/admin/brand" className="nav-link Link ex3">
+           Brand
         </Link>
       </li>
 

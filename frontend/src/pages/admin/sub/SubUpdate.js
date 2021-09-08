@@ -50,7 +50,7 @@ const SubUpdate = ({ match, history }) => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid product-forms">
       <div className="row">
         <div className="col-md-2">
           <AdminNav />

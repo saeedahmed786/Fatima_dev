@@ -153,8 +153,9 @@ const Checkout = ({ history }) => {
         <p>Products: <strong>{products.length} items</strong> </p>
         <hr />
         {showProductSummary()}
+        <span>Tax: {15 * total / 100} SR</span>
         <hr />
-        <p>Cart Total: {total} SR </p>
+        <p>Cart Total: {total + 15 * total / 100} SR </p>
 
         {totalAfterDiscount > 0 && (
           <p className="bg-success p-2">

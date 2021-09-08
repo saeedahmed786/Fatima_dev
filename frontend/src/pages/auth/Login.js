@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { auth, googleAuthProvider } from "../../firebase";
 import { toast } from "react-toastify";
 import { Button } from "antd";
-import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { createOrUpdateUser, login } from "../../functions/auth";
 import { GoogleLogin } from 'react-google-login';
 import { setAuthentication } from "../../functions/setLoginInfo";
-import { Children } from "react";
+import { Link } from "react-router-dom";
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -51,9 +48,9 @@ const Login = ({ history }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    try {
       login(email, password)
       .then((res) => {
+        if(res.status === 200) {
         dispatch({
           type: "LOGGED_IN_USER",
           payload: {
@@ -67,13 +64,11 @@ const Login = ({ history }) => {
         setAuthentication(res.data.user, res.data.token);
         roleBasedRedirect(res);
         window.location.reload();
+      } else {
+         setLoading(false);
+         toast.error(res.data.errorMessage);
+      }
       })
-      .catch((err) => console.log(err));
-    } catch (error) {
-      console.log(error);
-      toast.error(error.message);
-      setLoading(false);
-    }
   };
 
   const googleLogin = async (response) => {
@@ -98,21 +93,24 @@ const Login = ({ history }) => {
   };
 
   const loginForm = () => (
-    <div>
+    <div className = 'login'>
       <form onSubmit={handleSubmit}>
         <div className="form-group row">
-          <label for="inputEmail3" className="col-sm-2 col-form-label">Email</label>
-          <div className="col-sm-10">
-            <input type="email" className="form-control" id="inputEmail3" onChange = {(e) => setEmail(e.target.value)} placeholder="Email" />
+          <label for="inputEmail3" className="col-sm-2 col-12 col-form-label">Email</label>
+          <div className="col-sm-10 col-12">
+            <input type="email" className="form-control w-100" id="inputEmail3" onChange = {(e) => setEmail(e.target.value)} placeholder="Email" />
           </div>
         </div>
         <div className="form-group row mt-5">
-          <label for="inputPassword3" className="col-sm-2 col-form-label">Password</label>
-          <div className="col-sm-10">
-            <input type="password" className="form-control" id="inputPassword3" onChange = {(e) => setPassword(e.target.value)} placeholder="Password" />
+          <label for="inputPassword3" className="col-sm-2 col-12 col-form-label">Password</label>
+          <div className="col-sm-10 col-12">
+            <input type="password" className="form-control w-100" id="inputPassword3" onChange = {(e) => setPassword(e.target.value)} placeholder="Password" />
           </div>
         </div>
         <br />
+        <p className = 'fw-bold text-center'>
+        <Link to = '/forgot/password'>Forget Password?</Link>
+        </p>
         <div className = 'text-center'>
         <Button
         onClick={handleSubmit}
@@ -122,9 +120,8 @@ const Login = ({ history }) => {
         shape="round"
         // icon={<MailOutlined />}
         size="large"
-        // disabled={!email || password.length < 6}
       >
-        Login with Email/Password
+        Login
       </Button>
       </div>
       </form>
@@ -133,7 +130,7 @@ const Login = ({ history }) => {
 
   return (
 
-    <div className="container p-5 login">
+    <div className="p-4 login">
       <div className="row">
         <div className="col-md-6 offset-md-3">
           {loading ? (
@@ -147,7 +144,7 @@ const Login = ({ history }) => {
             <h2><span>or</span></h2>
           </div>
 
-          <div className = 'google-button text-center'>
+          <div className = 'google-button text-center w-sm-100'>
           <GoogleLogin
             clientId= "971744690757-7bofg1rqslqvst1glaspi5o9li7le07k.apps.googleusercontent.com"
             buttonText="Sign In With Google"

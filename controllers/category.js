@@ -53,8 +53,16 @@ exports.remove = async (req, res) => {
 };
 
 exports.getSubs = (req, res) => {
+  console.log(req.params._id);
   Sub.find({ parent: req.params._id }).exec((err, subs) => {
     if (err) console.log(err);
     res.json(subs);
   });
 };
+
+// exports.getSubsProducts = (req, res) => {
+//   Sub.find({ parent: req.params._id }).exec((err, subs) => {
+//     if (err) console.log(err);
+//     res.json(subs);
+//   });
+// };

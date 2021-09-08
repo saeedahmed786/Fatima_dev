@@ -83,7 +83,7 @@ const Cart = ({ history }) => {
   return (
     <div className="container pt-2 cart">
       <div className="row">
-        <div className="col-md-9">
+        <div className="col-lg-8">
           <div style = {{borderBottom: '2px solid #A17B14'}}>
           <h4>Your Cart</h4>
 
@@ -204,21 +204,21 @@ const Cart = ({ history }) => {
                 Tax
               </Col>
               <Col span = {12}>
-                {cart.length > 0 ? <span>720 SR </span> : 0} 
+                {cart.length > 0 ? <span>{15 * getTotal() / 100} SR</span> : 0} 
               </Col>
               <Col span = {22} style = {{borderBottom: '2px solid #A17B14', marginLeft: '6px'}}></Col>
               <Col span = {12} className = 'total'>
                 Total
               </Col>
               <Col span = {12} className = 'total'>
-                  {getTotal()} SR
+                  {getTotal() + 15 * getTotal() / 100} SR
               </Col>
           </Row>
           </div>  
       </div>
         </div>
         </div>
-        <div className="col-md-3">
+        <div className="col-lg-4">
           {/* <h4>Order Summary</h4>
           <hr />
           <p>Products</p>
@@ -282,24 +282,27 @@ const Cart = ({ history }) => {
             </div>
           </div>
           <div className = 'small-inputs'>
-          <div className='row mt-5 pt-1'>
+          <div className='row mt-5 pt-1 credit-card'>
             <div className = 'col-md-8'>
               <span className = 'tag'>
                 Expiration Date:
               </span>
               <br/>
-              <Select style={{ width: 60}}>
-                <Option value="S">S</Option>
-                <Option value="M">M</Option>
-                <Option value="L">L</Option>
-                <Option value="XL">XL</Option>
-              </Select>
+              <Input style = {{width: 60}} className = 'number' type = 'number'/>
               <span style = {{marginLeft: '23px'}}>
               <Select style={{ width: 60}}>
-                <Option value="S">S</Option>
-                <Option value="M">M</Option>
-                <Option value="L">L</Option>
-                <Option value="XL">XL</Option>
+                <Option value="S">1</Option>
+                <Option value="M">2</Option>
+                <Option value="L">3</Option>
+                <Option value="XL">4</Option>
+                <Option value="XL">5</Option>
+                <Option value="XL">6</Option>
+                <Option value="XL">7</Option>
+                <Option value="XL">8</Option>
+                <Option value="XL">9</Option>
+                <Option value="XL">10</Option>
+                <Option value="XL">11</Option>
+                <Option value="XL">12</Option>
               </Select>
               </span>
               </div>

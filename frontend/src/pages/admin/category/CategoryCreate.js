@@ -94,16 +94,18 @@ const CategoryCreate = () => {
 
           {/* step 5 */}
           {categories.filter(searched(keyword)).map((c) => (
-            <div className="alert alert-primary" key={c._id}>
+            <div className="lists" key={c._id}>
+              <span className = 'name'>
               {c.name}
+              </span>
               <span
                 onClick={() => handleRemove(c.slug)}
-                className="btn btn-sm float-end"
+                className="float-end"
               >
                 <DeleteOutlined className="text-danger" />
               </span>
               <Link to={`/admin/category/${c.slug}`}>
-                <span className="btn btn-sm float-end">
+                <span className="float-end">
                   <EditOutlined className="text-warning" />
                 </span>
               </Link>

@@ -7,10 +7,11 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// req.files.file.path
-exports.uploadImage = async (req, res) => {
+
+exports.uploadImage = async(req, res) => {
   console.log(req.file);
-  let result = await cloudinary.uploader.upload(req.body.image, {
+  const {path} = req.file;
+  let result = await cloudinary.uploader.upload(path, {
     public_id: `${Date.now()}`,
     resource_type: "auto", // jpeg, png
   });

@@ -61,11 +61,11 @@ const AllProducts = () => {
           {loading ? (
             <h4 className="text-danger">Loading...</h4>
           ) : (
-            <h4>All Products</h4>
+            <h4></h4>
           )}
           <div className="row">
             {products.map((product) => (
-              <div key={product._id} className="col-md-4 pb-3">
+              <div key={product._id} className="col-lg-3 col-md-4 col-xxl-2 col-xl-3 col-sm-6 col-6 pb-3">
                 <AdminProductCard product={product}  handleRemove={handleRemove} />
               </div>
             ))}

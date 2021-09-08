@@ -12,8 +12,11 @@ exports.create = async (req, res) => {
   }
 };
 
+exports.listAll = async (req, res) =>
+  res.json(await Sub.find().sort({ createdAt: -1 }).exec());
+
 exports.list = async (req, res) =>
-  res.json(await Sub.find({}).sort({ createdAt: -1 }).exec());
+  res.json(await Sub.find({parent: req.params.id}).sort({ createdAt: -1 }).exec());
 
 exports.read = async (req, res) => {
 let sub = await Sub.findOne({ slug: req.params.slug }).exec();

@@ -1,6 +1,9 @@
 import axios from "axios";
 
-export const getSubs = async () =>
+export const getSubs = async (id) =>
+  await axios.get(`${process.env.REACT_APP_API}/subs/${id}`);
+
+export const getAllSubs = async (id) =>
   await axios.get(`${process.env.REACT_APP_API}/subs`);
 
 export const getSub = async (slug) =>

@@ -3,8 +3,14 @@ const Product = require("../models/product");
 const Cart = require("../models/cart");
 const Coupon = require("../models/coupon");
 const Order = require("../models/order");
-// const uniqueid = require("uniqueid");
+const crypto = require('crypto');
+const nodemailer = require("nodemailer");
+const config = require('../config/dev');
+const bcrypt = require('bcryptjs');
+const { JwtSecret } = require("../config/dev");
 
+// const uniqueid = require("uniqueid");
+ 
 exports.userCart = async (req, res) => {
   // console.log(req.body); // {cart: []}
   const { cart } = req.body;
@@ -250,3 +256,83 @@ exports.createCashOrder = async (req, res) => {
   console.log("NEW ORDER SAVED", newOrder);
   res.json({ ok: true });
 };
+
+
+
+/****************************************************** Forgot Password ***********************************************/
+exports.resetPasswordLink = async(req, res) => {
+  console.log('sakfjskfj');
+  crypto.randomBytes(32, (error, buffer) => {
+      if(error) {
+          console.log(error);
+      } 
+      const token = buffer.toString("hex");
+     User.findOne({email: req.body.email}).then(user => {
+         if(!user) {
+             res.status(201).json({errorMessage: 'Email does not exist'});
+         } 
+         user.resetToken = token;
+         user.expireToken = Date.now() + 3600000;
+         user.save((err, result) => {
+             if(err) {
+                 res.status(400).json({errorMessage: 'Token saving failed'});
+             }
+              if(result) {
+                          let url = '';
+                          if(process.env.NODE_ENV === 'production') {
+                              url = `http://algaravi.com/reset/${token}`
+                          } else {
+                            url =  `http://localhost:3000/update/password/${token}`
+                          }
+                          let transporter = nodemailer.createTransport({
+                            service: 'gmail',
+                            auth: {
+                              user: 'ahmed30001883@gmail.com',
+                              pass: 'rais5793',
+                            },
+                          });
+                           transporter.sendMail({
+                            from: 'ahmed30001883@gmail.com',
+                            to: req.body.email,
+                            subject: "Email Verification Link",
+                            html: `<p>Click this <a href = ${url}>${url}</a> to verify your email.</p>`,
+                          }).then(data => {
+                                res.status(200).json({successMessage: 'Check your Inbox!', data});
+                        })
+              }
+         })
+
+     })
+  })
+ 
+ 
+}
+
+exports.updatePassword = async(req, res) => { 
+  console.log(req.body.password);
+  if(req.body.password !== req.body.confirm){
+       res.status(400).json({errorMessage: 'Passwords do not match.'})
+   }  
+
+   else {
+            await User.findOne({resetToken: req.body.token, expireToken: {$gt: Date.now()}}).then(user => {
+            if(!user) {
+                res.status(201).json({errorMessage: 'Try again. Session expired!'});
+            }    
+            if(user) {
+                    var salt = bcrypt.genSaltSync(10);
+                    var hash = bcrypt.hashSync(req.body.password, salt);
+                    user.password = hash;
+                    user.resetToken = '',
+                    user.expireToken = '',
+                    user.save((error, result) => {
+                        if(error) {
+                            res.status(400).json({errorMessage: 'Failed to update password'});
+                        } else {
+                            res.status(200).json({successMessage: 'Password updated Successfully.'})
+                        }
+                    })                
+            }
+          });
+   }
+}

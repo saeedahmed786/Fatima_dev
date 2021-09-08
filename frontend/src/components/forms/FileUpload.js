@@ -13,7 +13,7 @@ const FileUpload = ({ values, setValues, setLoading }) => {
     console.log(e.target.files);
     // resize
     let files = e.target.files; // 3
-    let allUploadedFiles = values.images;
+    let allUploadedFiles = values && values.images;
 
     if (files) {
       setLoading(true);
@@ -32,7 +32,7 @@ const FileUpload = ({ values, setValues, setLoading }) => {
                 }
               )
               .then((res) => {
-                console.log("IMAGE UPLOAD RES DATA", res);
+                // console.log("IMAGE UPLOAD RES DATA", res);
                 setLoading(false);
                 allUploadedFiles.push(res.data);
 
@@ -131,8 +131,8 @@ const FileUpload = ({ values, setValues, setLoading }) => {
             </Badge>
           ))}
       </div>
-      <div className="row">
-        <label className="btn btn-primary btn-raised mt-3">
+      <div className="row" style = {{width: '40%'}}>
+        <label className="mt-3 p-2" style = {{border: '3px solid #ae853b', borderRadius: '8px', color: '#ae853b'}}>
           Choose File
           <input
             type="file"

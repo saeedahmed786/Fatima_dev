@@ -23,7 +23,6 @@ const Wishlist = () => {
 
   const loadWishlist = () => {
     getWishlist(localStorage.getItem('token')).then((res) => {
-      console.log(res.data.wishlist);
       setWishlist(res.data.wishlist);
     });
   }
@@ -63,22 +62,20 @@ const Wishlist = () => {
     };
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid mt-5 pt-5 wishlist">
       <div className="row">
         <div className="col-md-2">
           <UserNav />
         </div>
         <div className="col">
-          <h4>Wishlist</h4>
           <div className="table-responsive cart">
       <table className="table table-borderless">
-        <thead style={{ borderBottom: '2px solid #A17B14' }}>
+        <thead>
           <tr>
             <th scope="col">Product</th>
             <th scope="col">Size</th>
             <th scope="col">Quantity</th>
             <th scope="col">Total Price</th>
-            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>

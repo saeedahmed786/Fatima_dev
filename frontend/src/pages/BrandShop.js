@@ -3,20 +3,20 @@ import {
   getProductsByCount,
   fetchProductsByFilter,
 } from "../functions/product";
-import { getCategories, getCategory } from "../functions/category";
-import { getSub, getSubs } from "../functions/sub";
+import { getCategories } from "../functions/category";
+import { getSubs } from "../functions/sub";
 import { useSelector, useDispatch } from "react-redux";
 import ProductCard from "../components/cards/ProductCard";
 import { Slider, Checkbox, Radio } from "antd";
 import {
   CloseOutlined,
-  PlusOutlined
+  PlusOutlined,
 } from "@ant-design/icons";
 import Star from "../components/forms/Star";
 import { SecondNav } from "../components/nav/SecondNav";
-import { getBrands } from "../functions/brand";
+import { getBrand, getBrands } from "../functions/brand";
 
-const Shop = (props) => {
+const BrandShop = (props) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [price, setPrice] = useState([0, 0]);
@@ -33,8 +33,7 @@ const Shop = (props) => {
   const [priceRangeShow, setPriceRangeShow] = useState(false);
   const [brands, setBrands] = useState([]);
   const [brand, setBrand] = useState("");
-  const [category, setCategory] = useState();
-  const [showAll, setShowAll] = useState(false);
+  const [brandImage, setBrandImage] = useState("");
   const [colors, setColors] = useState([
     "Black",
     "Brown",
@@ -48,6 +47,7 @@ const Shop = (props) => {
   let dispatch = useDispatch();
   let { search } = useSelector((state) => ({ ...state }));
   const { text } = search;
+
   useEffect(() => {
     loadAllProducts();
     loadBrands();
@@ -57,9 +57,8 @@ const Shop = (props) => {
   }, []);
 
   const fetchProducts = (arg) => {
-    console.log(arg);
     fetchProductsByFilter(arg).then((res) => {
-      setProducts(res && res.data);
+       setProducts(res && res.data);
     });
   };
 
@@ -74,10 +73,10 @@ const Shop = (props) => {
   // 2. load products on user search input
   useEffect(() => {
     const delayed = setTimeout(() => {
-      fetchProducts({ query: text });
-      if (!text) {
-        loadAllProducts();
-      }
+      // fetchProducts({ query: text });
+      // if (!text) {
+        fetchProducts({ brand: props.match.params.slug });
+      // }
     }, 300);
     return () => clearTimeout(delayed);
   }, [text]);
@@ -86,14 +85,8 @@ const Shop = (props) => {
   useEffect(() => {
     console.log("ok to request");
     fetchProducts({ price });
+    loadBrand();
   }, [ok]);
-
-  useEffect(() => {
-    loadAllProducts();
-    return () => {
-      
-    }
-  }, [showAll]);
 
   const handleSlider = (value) => {
     dispatch({
@@ -131,6 +124,8 @@ const Shop = (props) => {
         <br />
       </div>
     ));
+
+  console.log(products);
 
   // handle check for categories
   const handleCheck = (e) => {
@@ -223,6 +218,36 @@ const Shop = (props) => {
     fetchProducts({ sub });
   };
 
+  // const handleSub = (sub) => {
+  //   console.log("SUB", sub);
+  //   setSub(sub);
+  //   dispatch({
+  //     type: "SEARCH_QUERY",
+  //     payload: { text: "" },
+  //   });
+  //   setPrice([0, 0]);
+  //   setCategoryIds([]);
+  //   setStar("");
+  //   setBrand("");
+  //   setColor("");
+  //   setShipping("");
+  //   fetchProducts({ sub });
+  // };
+
+  // 7. show products based on brand name
+  // const showBrands = () =>
+  //   brands.map((b) => (
+  //     <Radio
+  //       value={b}
+  //       name={b}
+  //       checked={b === brand}
+  //       onChange={handleBrand}
+  //       className="pb-1 pl-4 pr-4"
+  //     >
+  //       {b}
+  //     </Radio>
+  //   ));
+
   const handleBrand = (e) => {
     setSub("");
     dispatch({
@@ -309,38 +334,18 @@ const Shop = (props) => {
     getBrands().then((c) => setBrands(c.data));
   }
 
-  var checkBoxes = document.getElementsByClassName("ant-checkbox-input");
-  var i;
-  for (i = 0; i < checkBoxes.length; i++) {
-    if (!checkBoxes[i].checked) {
-      //  loadAllProducts();
-    }
-  }
+  const loadBrand = () =>
+  getBrand(props.match.params.slug).then((c) => {
+    setBrandImage(c.data.brand.image);
+  });
 
   return (
     <div className="container-fluid shop">
        <div className = 'text-center mt-5'>
          {/* <img src = {img} /> */}
-         <SecondNav />
+         <SecondNav logo = {brandImage}/>
        </div>
       <div className="row">
-      <div className="col-md-9 col-sm-9 pt-2" style = {{paddingLeft: '28px'}}>
-          {loading ? (
-            <h4 className="text-danger">Loading...</h4>
-          ) : (
-            <h4 className="text-danger"></h4>
-          )}
-
-          {products && products.length < 1 && <h4 className = 'text-center text-danger'>No products found</h4>}
-
-          <div className="row pb-5">
-            {products && products.map((p) => (
-              <div key={p._id} className="col-md-4 col-lg-4 col-xl-3 col-sm-6 col-6 mt-3">
-                <ProductCard product={p} />
-              </div>
-            ))}
-          </div>
-        </div>
         <div className="font-home col-md-3 col-sm-2 pt-2 d-none d-sm-block">
           <br />
           <h4 className="colo"> التصنيفات</h4>
@@ -350,7 +355,7 @@ const Shop = (props) => {
                 <p className = 'mb-0 pb-0'><span>Sales </span></p>
               </div>
               <div className='col-md-4' style = {{textAlign: 'right'}}>
-                 <Checkbox />
+                 <Checkbox/>
               </div>
               <div className='col-md-12'>
                  <hr/>
@@ -362,13 +367,13 @@ const Shop = (props) => {
                  <Checkbox onChange = {() => loadAllProducts()}/>
               </div>
               <div className='col-md-12'>
-                 <hr/> 
+                 <hr/>
               </div>
               <div className='col-md-8'>
                 <p className = 'mb-0 pb-0'><span>Most Popular </span></p>
               </div>
               <div className='col-md-4' style = {{textAlign: 'right'}}>
-                 <Checkbox onClick = {(e) => setShowAll(!e.target.checked)} />
+                 <Checkbox/>
               </div>
               <div className='col-md-12'>
                  <hr/>
@@ -396,7 +401,7 @@ const Shop = (props) => {
                  subs.map(s => {
                    return(
                     <div className='col-md-12 sub'>
-                    <p className = 'mb-0'><span><Checkbox onClick = {(e) => setShowAll(!e.target.checked)} value = {s._id} onChange = {() => handleSub(s)}/></span> <span className = 'sub-text'>{s.name}</span></p>
+                    <p className = 'mb-0'><span><Checkbox value = {s._id} onChange = {() => handleSub(s)}/></span> <span className = 'sub-text'>{s.name}</span></p>
                     </div>
                    )
                  })
@@ -406,7 +411,7 @@ const Shop = (props) => {
                   )
                 })
               }
-             <div className='col-md-8'>
+              <div className='col-md-8'>
                 <p className = 'mb-0 pb-0'><span>Brands </span></p>
               </div>
               <div className='col-md-4' style = {{textAlign: 'right'}}>
@@ -427,7 +432,7 @@ const Shop = (props) => {
                     brands.length > 0 && brands.map(b => {
                       return(
                         <div className='col-md-12 sub'>
-                          <p><span><Checkbox onClick = {(e) => setShowAll(!e.target.checked)} value = {b.slug} onChange = {handleBrand}/></span> <span className = 'sub-text'>{b.name}</span></p>
+                          <p><span><Checkbox value = {b.slug} onChange = {handleBrand}/></span> <span className = 'sub-text'>{b.name}</span></p>
                        </div>
                       )
                     })
@@ -451,10 +456,28 @@ const Shop = (props) => {
               {
                  priceRangeShow && 
                  <>
-                      <Slider onChange = {handleSlider} range defaultValue={[0, 10000]} max = {10000} />
+                      <Slider range defaultValue={[20, 50]} />
                  </>
               }
             </div>
+          </div>
+        </div>
+
+        <div className="col-md-9 col-sm-9 pt-2" style = {{paddingLeft: '28px'}}>
+          {loading ? (
+            <h4 className="text-danger">Loading...</h4>
+          ) : (
+            <h4 className="text-danger"></h4>
+          )}
+
+            {products && products.length < 1 && <h4 className = 'text-center text-danger'>No products found!</h4>}
+
+          <div className="row pb-5">
+            {products && products.map((p) => (
+              <div key={p._id} className="col-md-4 col-lg-4 col-xl-3 col-sm-6 mt-3">
+                <ProductCard product={p} />
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -462,4 +485,4 @@ const Shop = (props) => {
   );
 };
 
-export default Shop;
+export default BrandShop;

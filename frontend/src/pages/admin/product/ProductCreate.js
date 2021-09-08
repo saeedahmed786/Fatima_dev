@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
 import { createProduct } from "../../../functions/product";
 import ProductCreateForm from "../../../components/forms/ProductCreateForm";
 import { getCategories, getCategorySubs } from "../../../functions/category";
@@ -19,27 +18,26 @@ const initialState = {
   quantity: "",
   images: [],
   colors: ["Black", "Brown", "Silver", "White", "Blue"],
-  brands: [
-  "BOSS","DKNY","Nikolia",
-  "AIGNER","ICEBERG","Chloe",
-  "NANA","MSGM","ALONDRA",
-  "ELISABETTA FRANCHI","JUNONA",
-  "KENZO","GIVENCHY",
-  "FENDI","SPERANZA",
-  "RALPH LAUREN","NEIL BARRETT",
-  "EMPORIO ARMANI","EMILIO PUCCI",
-  "CAMBRASS","KARL","MOSCHINO",
-  "BALMAIN","ALVIERO MARTINI","MARCELLO BURLON",
-  "MONNALISA","PASITO A PASITTO","BIKKIMBERG",
-  "ROBERTO CAVALLI","HUCKLEBONES","JOHN RICHMOUND",
-  "SIMONETTA","IL GUFO","SOPHIE LA GIRAFE",
-  "RASPBERRY PLUM","GRACI","CALVINKLEIN JEANS",
-  "LARANJINHA","BUGATTI","THEOPHILE & PATACHOU",
-  "TARTINE ET CHOCOLAT","THE MARC JACOBS"],
+  // brands: [
+  // "BOSS","DKNY","Nikolia",
+  // "AIGNER","ICEBERG","Chloe",
+  // "NANA","MSGM","ALONDRA",
+  // "ELISABETTA FRANCHI","JUNONA",
+  // "KENZO","GIVENCHY",
+  // "FENDI","SPERANZA",
+  // "RALPH LAUREN","NEIL BARRETT",
+  // "EMPORIO ARMANI","EMILIO PUCCI",
+  // "CAMBRASS","KARL","MOSCHINO",
+  // "BALMAIN","ALVIERO MARTINI","MARCELLO BURLON",
+  // "MONNALISA","PASITO A PASITTO","BIKKIMBERG",
+  // "ROBERTO CAVALLI","HUCKLEBONES","JOHN RICHMOUND",
+  // "SIMONETTA","IL GUFO","SOPHIE LA GIRAFE",
+  // "RASPBERRY PLUM","GRACI","CALVINKLEIN JEANS",
+  // "LARANJINHA","BUGATTI","THEOPHILE & PATACHOU",
+  // "TARTINE ET CHOCOLAT","THE MARC JACOBS"],
   color: "",
   brand: "",
 };
-
 
 
 const ProductCreate = () => {
@@ -47,9 +45,6 @@ const ProductCreate = () => {
   const [subOptions, setSubOptions] = useState([]);
   const [showSub, setShowSub] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  // redux
-  const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
     loadCategories();
@@ -89,6 +84,7 @@ const ProductCreate = () => {
     setShowSub(true);
   };
 
+  console.log(values);
   return (
     <div className="container-fluid">
       <div className="row">
@@ -103,7 +99,7 @@ const ProductCreate = () => {
           {JSON.stringify(values.images)}
 
           <div className="p-3">
-            <FileUpload 
+          <FileUpload 
             values={values} 
             setValues={setValues} 
             setLoading={setLoading}/>

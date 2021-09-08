@@ -3,7 +3,7 @@ import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { getCategories } from "../../../functions/category";
-import { createSub, getSub, removeSub, getSubs } from "../../../functions/sub";
+import { createSub, getSub, removeSub, getSubs, getAllSubs } from "../../../functions/sub";
 import { Link } from "react-router-dom";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import CategoryForm from "../../../components/forms/CategoryForm";
@@ -26,7 +26,7 @@ const SubCreate = () => {
   const loadCategories = () =>
     getCategories().then((c) => setCategories(c.data));
 
-  const loadSubs = () => getSubs().then((s) => setSubs(s.data));
+  const loadSubs = () => getAllSubs().then((s) => setSubs(s.data));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -83,7 +83,7 @@ const SubCreate = () => {
             <h4>Create sub category</h4>
           )}
 
-          <div className="form-group">
+          <div className="form-group" className = 'product-forms'>
             <label>Parent category</label>
             <select
               name="category"
@@ -111,16 +111,18 @@ const SubCreate = () => {
 
           {/* step 5 */}
           {subs.filter(searched(keyword)).map((s) => (
-            <div className="alert alert-secondary" key={s._id}>
+            <div className="lists alert" key={s._id}>
+              <span className = 'name'>
               {s.name}
+              </span>
               <span
                 onClick={() => handleRemove(s.slug)}
-                className="btn btn-sm float-end"
+                className="float-end"
               >
                 <DeleteOutlined className="text-danger" />
               </span>
               <Link to={`/admin/sub/${s.slug}`}>
-                <span className="btn btn-sm float-end">
+                <span className="float-end">
                   <EditOutlined className="text-warning" />
                 </span>
               </Link>

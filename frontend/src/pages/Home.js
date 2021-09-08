@@ -1,20 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // import Jumbotron from "../components/cards/Jumbotron";
 import BestSellers, { ShopByCategory } from "../components/home/ShopByCategory";
-import CategoryList from "../components/category/CategoryList";
-import SubList from "../components/sub/SubList";
 import Rectangle1 from "../images/Rectangle 1.png";
 import Rectangle2 from "../images/Rectangle 2.png";
 import Rectangle from "../images/Rectangle .png";
 import { SecondNav } from "../components/nav/SecondNav";
-import { Carousel } from "antd";
 import { MostPopular } from "../components/home/MostPopular";
 import { PopularBrands } from "../components/home/PopularBrands";
 
 
-
 const Home = () => {
-
   return (
     <>
       <div className="container homepage jumbotron font-weight-bold text-center cell home">

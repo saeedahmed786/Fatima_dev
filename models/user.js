@@ -21,6 +21,12 @@ const userSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    resetToken: {
+      type: String
+    },
+    expireToken: {
+      type: String
+    },
     address: String,
       wishlist: [{ type: ObjectId, ref: "Product" }],
   },
